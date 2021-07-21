@@ -1,6 +1,7 @@
 'use strict'
 
 const axios = require('axios');
+const service = require('./service');
 
 function showAllDivisions(req, res) {
     (async() => {
