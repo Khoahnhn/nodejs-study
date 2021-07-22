@@ -1,14 +1,15 @@
 const debug = require('debug')('debug:mysql');
 const Sequelize = require('sequelize');
-const systemConfig = require('config');
 const convert = require('../convert');
+const {mysql} = require('../../../../config/config');
 
-let host = process.env.MYSQL_HOST || systemConfig.get('mysql.host');
-let port = process.env.MYSQL_PORT || systemConfig.get('mysql.port');
-let user = process.env.MYSQL_USER || systemConfig.get('mysql.user');
-let password = process.env.MYSQL_PASSWORD || systemConfig.get('mysql.password');
-let database = process.env.MYSQL_DATABASE || systemConfig.get('mysql.database');
-let connectionLimit = systemConfig.get('mysql.connectionLimit');
+let host = process.env.MYSQL_HOST || mysql.host;
+let port = process.env.MYSQL_PORT || mysql.port;
+let user = process.env.MYSQL_USER || mysql.user;
+let password = process.env.MYSQL_PASSWORD === "" ? "" :  (process.env.MYSQL_DATABASE || mysql.password);
+let database = process.env.MYSQL_DATABASE || mysql.database;
+let connectionLimit = mysql.connectionLimit;
+
 
 const sequelize = new Sequelize(database, user, password, {
     host: host,

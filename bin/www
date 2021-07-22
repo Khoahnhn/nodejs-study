@@ -7,13 +7,15 @@
 const app = require('../app');
 const debug = require('debug')('study-nodejs:server');
 const http = require('http');
+const config = require('../config/config')
+require('colors');
 
 /**
  * Get port from environment and store in Express.
  */
 
 // let port = normalizePort(process.env.PORT || '3000');
-const port = '3000';
+let port = process.env.PORT || config.network.port;
 app.set('port', port);
 
 /**
@@ -88,12 +90,15 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   // debug('Listening on ' + bind);
-  console.log(`Server running on port ${port}`);
+  let hostname = "http://" + config.network.hostname;
+  console.log('Khởi động Server lúc: ' + Date().yellow);
+  console.log('HTTP server: ' + hostname + ':' + addr.port);
 }
 
-console.log('██████╗ ███████╗███╗   ███╗ ██████╗ \n' +
-            '██╔══██╗██╔════╝████╗ ████║██╔═══██╗\n' +
-            '██║  ██║█████╗  ██╔████╔██║██║   ██║\n' +
-            '██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║\n' +
-            '██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝\n' +
-            '╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝ ');
+console.log(`
+██████╗ ███████╗███╗   ███╗ ██████╗
+██╔══██╗██╔════╝████╗ ████║██╔═══██╗
+██║  ██║█████╗  ██╔████╔██║██║   ██║
+██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║
+██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝
+╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝`.yellow);

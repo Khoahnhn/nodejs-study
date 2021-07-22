@@ -2,8 +2,9 @@
 
 const Sequelize = require('sequelize');
 const db = require('../../base/mysql/mysql');
+const {Provinces} = require('../../provinces/models/provinces');
 
-const Provinces = db.sequelize.define('province', {
+const Districts = db.sequelize.define('district', {
     code: {
         type: Sequelize.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -12,7 +13,6 @@ const Provinces = db.sequelize.define('province', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
     },
     division_type: {
         type: Sequelize.STRING,
@@ -22,15 +22,9 @@ const Provinces = db.sequelize.define('province', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    phone_code: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        unique: true
-    },
-    zip_code: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        unique: true
+    province_code: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
     },
     population: {
         type: Sequelize.INTEGER,
@@ -42,6 +36,8 @@ const Provinces = db.sequelize.define('province', {
     }
 });
 
+Districts.belongsTo(Provinces, {onDelete: 'CASCADE', foreignKey: "province_code", targetKey: "code"});
+
 module.exports = {
-    Provinces
-};
+    Districts
+}

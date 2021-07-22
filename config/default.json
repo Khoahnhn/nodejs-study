@@ -1,9 +1,0 @@
-{
-  "mysql": {
-    "host": "localhost",
-    "database": "nodejs",
-    "user": "root",
-    "password": 1131998,
-    "connectionLimit": 10
-  }
-}
