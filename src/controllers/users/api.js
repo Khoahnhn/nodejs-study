@@ -2,6 +2,9 @@
 const axios = require('axios');
 const redis = require("redis");
 const MOCK_API_URL = "https://jsonplaceholder.typicode.com/users/";
+const dummyUser = require('./models/users');
+const xlsx = require('xlsx');
+const path = require('path');
 
 const redisClient = redis.createClient(6379);
 
@@ -52,7 +55,46 @@ async function getUserUsingRedis(req, res) {
     }
 }
 
+function exportExcel(req, res) {
+    (async() => {
+       try {
+           let users = dummyUser;
+           const data = users.map(user => {
+               return [user.id, user.name, user.age];
+           });
+           const filePath = './outputFiles/excel-from-js.xlsx';
+
+           const workSheetColumnName = [
+               "ID",
+               "Name",
+               "Age"
+           ]
+
+           const workSheetName = 'Users';
+
+           const workBook = xlsx.utils.book_new();
+           const workSheetData = [
+               workSheetColumnName,
+               ... data
+           ];
+           const workSheet = xlsx.utils.aoa_to_sheet(workSheetData);
+           xlsx.utils.book_append_sheet(workBook, workSheet, workSheetName);
+           xlsx.writeFile(workBook, path.resolve(filePath));
+
+           return res.json(200).json({
+                ok: true
+           });
+       } catch (e) {
+           res.status(500).json({
+               ok: false,
+               message: e.message
+           })
+       }
+    })()
+}
+
 module.exports = {
     getUser,
-    getUserUsingRedis
+    getUserUsingRedis,
+    exportExcel
 }
